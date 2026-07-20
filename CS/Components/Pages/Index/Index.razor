@@ -1,38 +1,40 @@
 ﻿@page "/"
 @inject DataService DataService
+@using DevExpress.Images.Blazor
 
 <DxRibbon>
 	<DxRibbonApplicationTab Text="Export" IconUrl="images/ribbon/share.svg">
 		<DxRibbonApplicationTabItem Text="CSV"
-									IconUrl="images/ribbon/table.svg"
+									IconUrl="@Icon.Table"
 									Click="Grid_ExportToCsv" />
 		<DxRibbonApplicationTabItem Text="PDF"
-									IconUrl="images/ribbon/document-blank.svg"
+									IconUrl="@Icon.Document"
 									Click="Grid_ExportToPdf" />
 		<DxRibbonApplicationTabItem Text="XLSX"
-									IconUrl="images/ribbon/table.svg"
+									IconUrl="@Icon.Table"
 									Click="Grid_ExportToXlsx" />
 	</DxRibbonApplicationTab>
 	<DxRibbonTab Text="Home">
 		<DxRibbonGroup Text="Grid Customization">
 			<DxRibbonToggleItem Text="@(ShowSearchBox ? "Hide Search Box" : "Show Search Box")"
-								IconUrl="images/ribbon/search.svg"
+								IconUrl="@Icon.Search"
 								Tooltip="Toggle Search Box"
 								Click="Grid_ToggleSearch" />
 			<DxRibbonToggleItem Text="@(ShowFilterPanel ? "Hide Filter Panel" : "Show Filter Panel")"
 								Tooltip="Toggle Filter Panel"
-								IconUrl="images/ribbon/grid-toolbar-filter.svg"
+								IconUrl="@Icon.Filter"
 								Click="Grid_ToggleFilterPanel" />
 			<DxRibbonToggleItem Text="@(ShowGroupPanel ? "Hide Group Panel" : "Show Group Panel")"
 								Tooltip="Toggle Group Panel"
+								IconUrl="@Icon.Group"
 								Click="Grid_ToggleGroupPanel" />
 			<DxRibbonItem Text="Show Column Chooser"
 						  Tooltip="Show Column Chooser"
-						  IconUrl="images/ribbon/column-chooser-fluent.svg"
+						  IconUrl="@Icon.ColumnChooser"
 						  Click="Grid_ShowColumnChooser" />
 			<DxRibbonToggleItem Text="@(categoryGroupIndex == 0 ? "Enable Grouping" : "Disable Grouping")"
 								Tooltip="Toggle Grouping"
-								IconUrl="images/ribbon/grouping.svg"
+								IconUrl="@Icon.Group"
 								Click="Grid_ToggleGrouping" />
 			<DxRibbonItem Text="Total Summary"
 						  SplitDropDownButton="true"
@@ -57,33 +59,33 @@
 	<DxRibbonTab Text="Data">
 		<DxRibbonGroup Text="Data">
 			<DxRibbonItem Text="New Item"
-						  IconUrl="images/ribbon/document-blank.svg"
+						  IconUrl="@Icon.Document"
 						  Tooltip="New Item"
 						  Click="Grid_NewItem" />
 			<DxRibbonItem Text="Delete Item"
-						  IconUrl="images/ribbon/delete.svg"
+						  IconUrl="@Icon.Delete"
 						  Tooltip="Delete Item"
 						  Click="Grid_DeleteItem" />
 			<DxRibbonItem Text="Edit Mode:"
 						  Enabled="false"
-						  IconUrl="images/ribbon/grid-toolbar-edit.svg"
+						  IconUrl="@Icon.TableEdit"
 						  CssClass="rb-text-item" />
 			<DxRibbonComboBoxItem Data="EditModes"
 								  @bind-Value="CurrentEditMode"
 								  TextFieldName="@nameof(GridEditMode)" />
 			<DxRibbonItem Text="Export"
-						  IconUrl="images/ribbon/share.svg"
+						  IconUrl="@Icon.Share"
 						  SplitDropDownButton="true"
 						  IsPrimary="true"
 						  Tooltip="Export">
 				<DxRibbonItem Text="CSV" Tooltip="CSV"
-							  IconUrl="images/ribbon/table.svg"
+							  IconUrl="@Icon.Table"
 							  Click="Grid_ExportToCsv" />
 				<DxRibbonItem Text="PDF" Tooltip="PDF"
-							  IconUrl="images/ribbon/document-blank.svg"
+							  IconUrl="@Icon.Document"
 							  Click="Grid_ExportToPdf" />
 				<DxRibbonItem Text="XLSX" Tooltip="XLSX"
-							  IconUrl="images/ribbon/table.svg"
+							  IconUrl="@Icon.Table"
 							  Click="Grid_ExportToXlsx" />
 			</DxRibbonItem>
 		</DxRibbonGroup>
