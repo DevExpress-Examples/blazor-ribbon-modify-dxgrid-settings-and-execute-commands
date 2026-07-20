@@ -55,8 +55,5 @@ html, body {
 
 /* Ribbon */
 .rb-text-item {
-    color: rgb(22, 22, 22)
-}
-.rb-text-item:hover {
-    color: rgb(22, 22, 22)!important
+    color: var(--dxds-color-content-neutral-default-static-light-rest) !important;
 }

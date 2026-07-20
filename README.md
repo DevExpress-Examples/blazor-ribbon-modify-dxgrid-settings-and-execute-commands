@@ -14,40 +14,35 @@ This example uses `DxRibbon` to modify the following `DxGrid` settings and execu
 * Modify the number of items on a page
 * Export data to CSV, PDF, and XLSX
 
-This example uses the following DxRibbon elements:
-
-* `DxRibbonApplicationTab` and `DxRibbonApplicationTabItem`
-* `DxRibbonTab` and `DxRibbonGroup`
-* `DxRibbonToggleItem`, `DxRibbonItem`, `DxRibbonSpinEditItem`, `DxRibbonComboBoxItem`.
-
 ## Implementation Details
 
 ### Control States of DxGrid Panels
 
 `DxRibbon` items update properties that are bound to `DxGrid` panel settings. For example, the following code snippet controls grid's filter panel:
 
+```html
 <DxRibbon>
     @* ... *@
 	<DxRibbonTab Text="Home">
 		<DxRibbonGroup Text="Grid Customization">
-			<DxRibbonToggleItem Text="@(showFilterPanel ? "Hide Filter Panel" : "Show Filter Panel")"
+			<DxRibbonToggleItem Text="@(ShowFilterPanel ? "Hide Filter Panel" : "Show Filter Panel")"
 								Tooltip="Toggle Filter Panel"
-								IconCssClass="rb-icon rb-icon-filter"
-								Click="ToggleFilterPanel" />
+								IconUrl="@Icon.Filter"
+								Click="Grid_ToggleFilterPanel" />
         </DxRibbonGroup>
     </DxRibbonTab>
 </DxRibbon>
 
-<DxGrid ShowFilterRow="@showFilterPanel"
+<DxGrid ShowFilterRow="@ShowFilterPanel"
         @* ... *@ >
 </DxGrid>
 
 @code{
     // ...
-	bool showFilterPanel { get; set; } = false;
+	bool ShowFilterPanel { get; set; } = false;
 
-	async Task ToggleFilterPanel() {
-		showFilterPanel = !showFilterPanel;
+	async Task Grid_ToggleFilterPanel() {
+		ShowFilterPanel = !ShowFilterPanel;
 		await Task.CompletedTask;
 	}
 }
@@ -59,7 +54,7 @@ This approach is also used to control search box, group panel, and column choose
 
 Both `DxRibbonComboBoxItem` and [DxGrid.EditMode](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxGrid.EditMode) are bound to `CurrentEditMode`:
 
-```
+```html
 <DxRibbon>
     @* ... *@
 	<DxRibbonTab Text="Data">
@@ -91,6 +86,7 @@ Both `DxRibbonComboBoxItem` and [DxGrid.EditMode](https://docs.devexpress.com/Bl
 
 Define an [EditFormTemplate](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxGrid.EditFormTemplate) to use pop-up and inline edit forms:
 
+```html
 <DxGrid EditMode="@CurrentEditMode"
         @* ... *@ >
 	<EditFormTemplate Context="editFormContext">
@@ -132,19 +128,18 @@ Define an [EditFormTemplate](https://docs.devexpress.com/Blazor/DevExpress.Blazo
 
 ### Define Ribbon Label Items
 
-`DxRibbonItem` and custom CSS classes implement static Ribbon text:
+`DxRibbonItem` and custom CSS class implement static Ribbon text:
 
 ```xml
+@using DevExpress.Images.Blazor
+@* ... *@
 <DxRibbonItem Text="Items on Page:"
               Enabled="false"
               CssClass="rb-text-item" />
 ```
 ```css
 .rb-text-item {
-    color: rgb(22, 22, 22)
-}
-.rb-text-item:hover {
-    color: rgb(22, 22, 22)!important
+    color: var(--dxds-color-content-neutral-default-static-light-rest) !important;
 }
 ```
 
@@ -152,10 +147,11 @@ Define an [EditFormTemplate](https://docs.devexpress.com/Blazor/DevExpress.Blazo
 
 The `Total Summary` ribbon item's menu contains three independent toggles. You can keep their states in sync as follows:
 
+```html
 <DxRibbonItem Text="Total Summary"
               SplitDropDownButton="true"
               Tooltip="Total Summary"
-              Click="ToggleSummaries"
+              Click="Grid_ToggleSummaries"
               IsPrimary="true" >
     <DxRibbonToggleItem Text="Product Name" Checked="@productNameSummary" Click="ToggleProductNameSummary" />
     <DxRibbonToggleItem Text="Unit Price" Checked="@unitPriceSummary" Click="ToggleUnitPriceSummary" />
@@ -163,7 +159,7 @@ The `Total Summary` ribbon item's menu contains three independent toggles. You c
 </DxRibbonItem>
 
 @code{
-	async Task ToggleSummaries() {
+	async Task Grid_ToggleSummaries() {
 		bool allOff = !productNameSummary && !unitPriceSummary && !unitsInStockSummary;
 
 		productNameSummary = allOff;
