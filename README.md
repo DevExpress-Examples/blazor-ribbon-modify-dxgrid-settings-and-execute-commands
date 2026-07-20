@@ -4,15 +4,15 @@
 [![](https://img.shields.io/badge/📖_How_to_use_DevExpress_Examples-e9f6fc?style=flat-square)](https://docs.devexpress.com/GeneralInformation/403183)
 [![](https://img.shields.io/badge/💬_Leave_Feedback-feecdd?style=flat-square)](#does-this-example-address-your-development-requirementsobjectives)
 <!-- default badges end -->
-# Blazor Ribbon - Control DxGrid Actions and Settings
+# Blazor Ribbon – Modify Settings and Execute Commands Within Blazor Grid
 
-This repository uses `DxRibbon` to control the following `DxGrid` actions and settings:
+This example uses `DxRibbon` to modify the following `DxGrid` settings and execute commands:
 
-* create and delete rows
-* change grid's edit mode
-* show/hide column chooser, search box, filter panel, and group panel
-* change the number of items per page
-* export data to CSV, PDF, and XLSX.
+* Add and delete rows
+* Switch Grid edit modes
+* Display/hide column chooser, search box, filter panel, and group panel
+* Modify the number of items on a page
+* Export data to CSV, PDF, and XLSX
 
 This example uses the following DxRibbon elements:
 
@@ -26,7 +26,6 @@ This example uses the following DxRibbon elements:
 
 `DxRibbon` items update properties that are bound to `DxGrid` panel settings. For example, the following code snippet controls grid's filter panel:
 
-```
 <DxRibbon>
     @* ... *@
 	<DxRibbonTab Text="Home">
@@ -56,9 +55,9 @@ This example uses the following DxRibbon elements:
 
 This approach is also used to control search box, group panel, and column chooser visibility.
 
-### Change DxGrid Edit Modes
+### Switch DxGrid Edit Modes
 
-`DxRibbonComboBoxItem` binds to `CurrentEditMode`, and `DxGrid` uses this value for its [EditMode](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxGrid.EditMode) setting:
+Both `DxRibbonComboBoxItem` and [DxGrid.EditMode](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxGrid.EditMode) are bound to `CurrentEditMode`:
 
 ```
 <DxRibbon>
@@ -90,9 +89,8 @@ This approach is also used to control search box, group panel, and column choose
 }
 ```
 
-To use `DxGrid` pop-up and inline edit forms, define an [EditFormTemplate](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxGrid.EditFormTemplate):
+Define an [EditFormTemplate](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxGrid.EditFormTemplate) to use pop-up and inline edit forms:
 
-```
 <DxGrid EditMode="@CurrentEditMode"
         @* ... *@ >
 	<EditFormTemplate Context="editFormContext">
@@ -130,12 +128,11 @@ To use `DxGrid` pop-up and inline edit forms, define an [EditFormTemplate](https
 	</EditFormTemplate>
     @* ... *@
 </DxGrid>
-
 ```
 
 ### Define Ribbon Label Items
 
-In this example, static ribbon text is implemented with `DxRibbonItem` and custom CSS classes:
+`DxRibbonItem` and custom CSS classes implement static Ribbon text:
 
 ```xml
 <DxRibbonItem Text="Items on Page:"
@@ -151,11 +148,10 @@ In this example, static ribbon text is implemented with `DxRibbonItem` and custo
 }
 ```
 
-### Update ToggleItem State
+### Synchronize Togge Item States
 
-`Total Summary` ribbon item menu contains three independent toggles. Use the following code to keep their states in sync:
+The `Total Summary` ribbon item's menu contains three independent toggles. You can keep their states in sync as follows:
 
-```
 <DxRibbonItem Text="Total Summary"
               SplitDropDownButton="true"
               Tooltip="Total Summary"
@@ -180,7 +176,7 @@ In this example, static ribbon text is implemented with `DxRibbonItem` and custo
 }
 ```
 
-After you change toggle values in code, call [StateHasChanged](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.componentbase.statehaschanged?view=aspnetcore-10.0) to force a re-render and reflect these changes in the UI.
+After you change toggle values in code, call the [StateHasChanged](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.componentbase.statehaschanged) method to force a re-render and reflect these changes in the UI.
 
 ## Files to Review
 
