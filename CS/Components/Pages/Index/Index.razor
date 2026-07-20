@@ -1,0 +1,303 @@
+﻿@page "/"
+@inject DataService DataService
+
+<DxRibbon>
+	<DxRibbonApplicationTab Text="Export" IconCssClass="rb-icon rb-icon-share">
+		<DxRibbonApplicationTabItem Text="CSV"
+									IconCssClass="rb-icon rb-icon-table"
+									Click="Export_To_Csv" />
+		<DxRibbonApplicationTabItem Text="PDF"
+									IconCssClass="rb-icon rb-icon-document-blank"
+									Click="Export_To_Pdf" />
+		<DxRibbonApplicationTabItem Text="XLSX"
+									IconCssClass="rb-icon rb-icon-table"
+									Click="Export_To_Xlsx" />
+	</DxRibbonApplicationTab>
+	<DxRibbonTab Text="Home">
+		<DxRibbonGroup Text="Grid Customization">
+			<DxRibbonToggleItem Text="@(showSearchBox ? "Hide Search Box" : "Show Search Box")"
+								IconCssClass="rb-icon rb-icon-search"
+								Tooltip="Toggle Search Box"
+								Click="ToggleSearch" />
+			<DxRibbonToggleItem Text="@(showFilterPanel ? "Hide Filter Panel" : "Show Filter Panel")"
+								Tooltip="Toggle Filter Panel"
+								IconCssClass="rb-icon rb-icon-filter"
+								Click="ToggleFilterPanel" />
+			<DxRibbonToggleItem Text="@(showGroupPanel ? "Hide Group Panel" : "Show Group Panel")"
+								Tooltip="Toggle Group Panel"
+								Click="ToggleGroupPanel" />
+			<DxRibbonItem Text="Show Column Chooser" Tooltip="Show Column Chooser"
+						  IconCssClass="rb-icon rb-icon-column-chooser"
+								Click="ShowColumnChooser" />
+			<DxRibbonToggleItem Text="@(categoryGroupIndex == 0 ? "Enable Grouping" : "Disable Grouping")"
+								Tooltip="Toggle Grouping"
+								Click="ToggleGrouping" />
+			<DxRibbonItem Text="Total Summary"
+						  SplitDropDownButton="true"
+						  Tooltip="Total Summary"
+						  Click="ToggleSummaries"
+						  IsPrimary="true">
+				<DxRibbonToggleItem Text="Product Name" Checked="@productNameSummary" Click="ToggleProductNameSummary" />
+				<DxRibbonToggleItem Text="Unit Price" Checked="@unitPriceSummary" Click="ToggleUnitPriceSummary" />
+				<DxRibbonToggleItem Text="Units in Stock" Checked="@unitsInStockSummary" Click="ToggleUnitsInStockSummary" />
+			</DxRibbonItem>
+			<DxRibbonItem Text="Items on Page:"
+						  Enabled="false"
+						  CssClass="rb-text-item" />
+			<DxRibbonSpinEditItem Value="@itemsOnPage"
+								  MinValue="5"
+								  MaxValue="32"
+								  Increment="1"
+								  Width="100px"
+								  ValueChanged="@((int newValue) => ItemsOnPageChanged(newValue))" />
+		</DxRibbonGroup>
+	</DxRibbonTab>
+	<DxRibbonTab Text="Data">
+		<DxRibbonGroup Text="Data">
+			<DxRibbonItem Text="New Item"
+						  IconCssClass="rb-icon rb-icon-document-blank"
+						  Tooltip="new Item"
+						  Click="NewItem" />
+			<DxRibbonItem Text="Delete Item"
+						  IconCssClass="rb-icon rb-icon-delete"
+						  Tooltip="Delete item"
+						  Click="DeleteItem" />
+			<DxRibbonItem Text="Edit Mode:"
+						  Enabled="false"
+						  IconCssClass="rb-icon rb-icon-edit"
+						  CssClass="rb-text-item" />
+			<DxRibbonComboBoxItem Data="EditModes"
+								  @bind-Value="CurrentEditMode"
+								  TextFieldName="@nameof(GridEditMode)" />
+			<DxRibbonItem Text="Export"
+						  IconCssClass="rb-icon rb-icon-share"
+						  SplitDropDownButton="true"
+						  IsPrimary="true"
+						  Tooltip="Export">
+				<DxRibbonItem Text="CSV" Tooltip="CSV"
+							  IconCssClass="rb-icon rb-icon-table"
+							  Click="Export_To_Csv" />
+				<DxRibbonItem Text="PDF" Tooltip="PDF"
+							  IconCssClass="rb-icon rb-icon-document-blank"
+							  Click="Export_To_Pdf" />
+				<DxRibbonItem Text="XLSX" Tooltip="XLSX"
+							  IconCssClass="rb-icon rb-icon-table"
+							  Click="Export_To_Xlsx" />
+			</DxRibbonItem>
+		</DxRibbonGroup>
+	</DxRibbonTab>
+</DxRibbon>
+<DxGrid Data="@products"
+		KeyFieldName="@nameof(Product.ProductID)"
+		@ref="grid"
+		EditMode="@CurrentEditMode"
+		ShowFilterRow="@showFilterPanel"
+		ShowGroupPanel="@showGroupPanel"
+		ShowSearchBox="@showSearchBox"
+		AutoExpandAllGroupRows="true"
+		FocusedRowEnabled="true"
+		AllowSelectRowByClick="true"
+		FocusedRowChanged="OnFocusedDataItemChanged"
+		DataItemDeleting="OnDataItemDeleting"
+		EditModelSaving="OnEditModelSaving"
+		CustomizeEditModel="OnCustomizeEditModel"
+		PageSize="@itemsOnPage">
+	<EditFormTemplate Context="editFormContext">
+		@{
+			var product = (Product)editFormContext.EditModel;
+		}
+		<DxFormLayout>
+			<DxFormLayoutItem Caption="Product Name:">
+				@editFormContext.GetEditor("ProductName")
+			</DxFormLayoutItem>
+			<DxFormLayoutItem Caption="Category:">
+				<DxComboBox Data="@categories"
+							Value="@product.CategoryID"
+							ValueChanged="@((int? newValue) => product.CategoryID = newValue)"
+							ValidationEnabled="false"
+							SearchMode="@ListSearchMode.AutoSearch"
+							SearchFilterCondition="@ListSearchFilterCondition.Contains"
+							TextFieldName="@nameof(Category.CategoryName)"
+							ValueFieldName="@nameof(Category.CategoryID)">
+				</DxComboBox>
+			</DxFormLayoutItem>
+			<DxFormLayoutItem Caption="Unit Price:">
+				@editFormContext.GetEditor("UnitPrice")
+			</DxFormLayoutItem>
+			<DxFormLayoutItem Caption="Units In Stock:">
+				@editFormContext.GetEditor("UnitsInStock")
+			</DxFormLayoutItem>
+			<DxFormLayoutItem Caption="Restock Date:">
+				@editFormContext.GetEditor("RestockDate")
+			</DxFormLayoutItem>
+			<DxFormLayoutItem Caption="Discontinued:">
+				@editFormContext.GetEditor("Discontinued")
+			</DxFormLayoutItem>
+		</DxFormLayout>
+	</EditFormTemplate>
+	<Columns>
+		<DxGridDataColumn FieldName="@nameof(Product.ProductID)" Width="90px" ReadOnly="true" />
+		<DxGridDataColumn FieldName="@nameof(Product.ProductName)" MinWidth="200" Width="50%" />
+		<DxGridDataColumn FieldName="@nameof(Product.CategoryID)"
+						  Caption="Category"
+						  MinWidth="150">
+			<EditSettings>
+				<DxComboBoxSettings Data="@categories"
+									ValueFieldName="@nameof(Category.CategoryID)"
+									TextFieldName="@nameof(Category.CategoryName)" />
+			</EditSettings>
+		</DxGridDataColumn>
+		<DxGridDataColumn FieldName="@nameof(Product.UnitPrice)"
+						  DisplayFormat="c2"
+						  MinWidth="130"
+						  SortOrder="GridColumnSortOrder.Ascending"
+						  SortIndex="0" />
+		<DxGridDataColumn FieldName="@nameof(Product.UnitsInStock)"
+						  MinWidth="130"
+						  SortOrder="GridColumnSortOrder.Descending"
+						  SortIndex="1" />
+		<DxGridDataColumn FieldName="@nameof(Product.RestockDate)"
+						  DisplayFormat="d"
+						  MinWidth="130" />
+		<DxGridDataColumn FieldName="@nameof(Product.Discontinued)" MinWidth="130" />
+	</Columns>
+	<TotalSummary>
+		<DxGridSummaryItem FieldName="@nameof(Product.ProductName)"
+						   SummaryType="GridSummaryItemType.Count" Visible="@productNameSummary" />
+		<DxGridSummaryItem FieldName="@nameof(Product.UnitPrice)"
+						   SummaryType="GridSummaryItemType.Avg"
+						   ValueDisplayFormat="c2" Visible="@unitPriceSummary" />
+		<DxGridSummaryItem FieldName="@nameof(Product.UnitsInStock)"
+						   SummaryType="GridSummaryItemType.Sum" Visible="@unitsInStockSummary" />
+	</TotalSummary>
+</DxGrid>
+@code {
+
+	public static readonly GridEditMode[] EditModes = new GridEditMode[] {
+				GridEditMode.EditCell,
+				GridEditMode.EditForm,
+				GridEditMode.PopupEditForm,
+				GridEditMode.EditRow
+	};
+
+	private GridEditMode CurrentEditMode { get; set; } = EditModes[0];
+
+	private void ItemsOnPageChanged(int newValue) {
+		itemsOnPage = newValue;
+		grid.BeginUpdate();
+		grid.PageSize = itemsOnPage;
+		grid.EndUpdate();
+	}
+
+	const string ExportFileName = "ExportResult";
+	bool showSearchBox { get; set; } = false;
+	bool showFilterPanel { get; set; } = false;
+	bool showGroupPanel { get; set; } = false;
+	bool showColumnChooser { get; set; } = false;
+	byte categoryGroupIndex { get; set; } = 0;
+
+	bool productNameSummary { get; set; } = false;
+	bool unitPriceSummary { get; set; } = false;
+	bool unitsInStockSummary { get; set; } = false;
+
+	int itemsOnPage { get; set; } = 10;
+
+	Product SelectedDataItem { get; set; }
+
+	int FocusedRowVisibleIndex { get; set; }
+	DxGrid grid { get; set; }
+	List<Product> products = new();
+	List<Category> categories = new();
+
+	void OnFocusedDataItemChanged(GridFocusedRowChangedEventArgs e) {
+		if (e.DataItem != null) {
+			SelectedDataItem = (Product)e.DataItem;
+		}
+	}
+
+	protected override void OnInitialized() {
+		products = DataService.GetProducts().ToList();
+		categories = DataService.GetCategories().ToList();
+	}
+
+	async Task NewItem() {
+		await grid.StartEditNewRowAsync();
+	}
+	void DeleteItem() {
+		grid.ShowRowDeleteConfirmation(FocusedRowVisibleIndex);
+	}
+	void ShowColumnChooser() {
+		grid.ShowColumnChooser();
+	}
+	async Task Export_To_Xlsx() {
+		await grid.ExportToXlsxAsync(ExportFileName);
+	}
+	async Task Export_To_Csv() {
+		await grid.ExportToCsvAsync(ExportFileName);
+	}
+	async Task Export_To_Pdf() {
+		await grid.ExportToPdfAsync(ExportFileName);
+	}
+	async Task ToggleSearch() {
+		showSearchBox = !showSearchBox;
+		await Task.CompletedTask;
+	}
+	async Task ToggleFilterPanel() {
+		showFilterPanel = !showFilterPanel;
+		await Task.CompletedTask;
+	}
+	async Task ToggleGroupPanel() {
+		showGroupPanel = !showGroupPanel;
+		await Task.CompletedTask;
+	}
+	async Task ToggleGrouping() {
+		grid.BeginUpdate();
+		if (categoryGroupIndex == 0) {
+			grid.GroupBy("CategoryID", 1);
+			categoryGroupIndex = 1;
+		}
+		else {
+			grid.GroupBy("CategoryID", -1);
+			categoryGroupIndex = 0;
+		}
+		grid.EndUpdate();
+		await Task.CompletedTask;
+	}
+	async Task ToggleProductNameSummary() {
+		productNameSummary = !productNameSummary;
+		await Task.CompletedTask;
+	}
+	async Task ToggleUnitPriceSummary() {
+		unitPriceSummary = !unitPriceSummary;
+		await Task.CompletedTask;
+	}
+	async Task ToggleUnitsInStockSummary() {
+		unitsInStockSummary = !unitsInStockSummary;
+		await Task.CompletedTask;
+	}
+	async Task ToggleSummaries() {
+		bool allOff = !productNameSummary && !unitPriceSummary && !unitsInStockSummary;
+
+		productNameSummary = allOff;
+		unitPriceSummary = allOff;
+		unitsInStockSummary = allOff;
+
+		StateHasChanged();
+		await Task.CompletedTask;
+	}
+
+	async Task<List<Product>> OnEditModelSaving(GridEditModelSavingEventArgs e) {
+		if (e.IsNew)
+			await Task.Run(() => products.Add((Product)e.EditModel));
+		return products;
+	}
+	async Task OnDataItemDeleting(GridDataItemDeletingEventArgs e) {
+		products.Remove(SelectedDataItem);
+	}
+	void OnCustomizeEditModel(GridCustomizeEditModelEventArgs e) {
+		if (e.IsNew) {
+			var editModel = (Product)e.EditModel;
+			editModel.ProductID = products.Max(x => x.ProductID) + 1;
+		}
+	}
+}
