@@ -2,49 +2,51 @@
 @inject DataService DataService
 
 <DxRibbon>
-	<DxRibbonApplicationTab Text="Export" IconCssClass="rb-icon rb-icon-share">
+	<DxRibbonApplicationTab Text="Export" IconUrl="images/ribbon/share.svg">
 		<DxRibbonApplicationTabItem Text="CSV"
-									IconCssClass="rb-icon rb-icon-table"
-									Click="Export_To_Csv" />
+									IconUrl="images/ribbon/table.svg"
+									Click="Grid_ExportToCsv" />
 		<DxRibbonApplicationTabItem Text="PDF"
-									IconCssClass="rb-icon rb-icon-document-blank"
-									Click="Export_To_Pdf" />
+									IconUrl="images/ribbon/document-blank.svg"
+									Click="Grid_ExportToPdf" />
 		<DxRibbonApplicationTabItem Text="XLSX"
-									IconCssClass="rb-icon rb-icon-table"
-									Click="Export_To_Xlsx" />
+									IconUrl="images/ribbon/table.svg"
+									Click="Grid_ExportToXlsx" />
 	</DxRibbonApplicationTab>
 	<DxRibbonTab Text="Home">
 		<DxRibbonGroup Text="Grid Customization">
-			<DxRibbonToggleItem Text="@(showSearchBox ? "Hide Search Box" : "Show Search Box")"
-								IconCssClass="rb-icon rb-icon-search"
+			<DxRibbonToggleItem Text="@(ShowSearchBox ? "Hide Search Box" : "Show Search Box")"
+								IconUrl="images/ribbon/search.svg"
 								Tooltip="Toggle Search Box"
-								Click="ToggleSearch" />
-			<DxRibbonToggleItem Text="@(showFilterPanel ? "Hide Filter Panel" : "Show Filter Panel")"
+								Click="Grid_ToggleSearch" />
+			<DxRibbonToggleItem Text="@(ShowFilterPanel ? "Hide Filter Panel" : "Show Filter Panel")"
 								Tooltip="Toggle Filter Panel"
-								IconCssClass="rb-icon rb-icon-filter"
-								Click="ToggleFilterPanel" />
-			<DxRibbonToggleItem Text="@(showGroupPanel ? "Hide Group Panel" : "Show Group Panel")"
+								IconUrl="images/ribbon/grid-toolbar-filter.svg"
+								Click="Grid_ToggleFilterPanel" />
+			<DxRibbonToggleItem Text="@(ShowGroupPanel ? "Hide Group Panel" : "Show Group Panel")"
 								Tooltip="Toggle Group Panel"
-								Click="ToggleGroupPanel" />
-			<DxRibbonItem Text="Show Column Chooser" Tooltip="Show Column Chooser"
-						  IconCssClass="rb-icon rb-icon-column-chooser"
-								Click="ShowColumnChooser" />
+								Click="Grid_ToggleGroupPanel" />
+			<DxRibbonItem Text="Show Column Chooser"
+						  Tooltip="Show Column Chooser"
+						  IconUrl="images/ribbon/column-chooser-fluent.svg"
+						  Click="Grid_ShowColumnChooser" />
 			<DxRibbonToggleItem Text="@(categoryGroupIndex == 0 ? "Enable Grouping" : "Disable Grouping")"
 								Tooltip="Toggle Grouping"
-								Click="ToggleGrouping" />
+								IconUrl="images/ribbon/grouping.svg"
+								Click="Grid_ToggleGrouping" />
 			<DxRibbonItem Text="Total Summary"
 						  SplitDropDownButton="true"
 						  Tooltip="Total Summary"
-						  Click="ToggleSummaries"
+						  Click="Grid_ToggleSummaries"
 						  IsPrimary="true">
-				<DxRibbonToggleItem Text="Product Name" Checked="@productNameSummary" Click="ToggleProductNameSummary" />
-				<DxRibbonToggleItem Text="Unit Price" Checked="@unitPriceSummary" Click="ToggleUnitPriceSummary" />
-				<DxRibbonToggleItem Text="Units in Stock" Checked="@unitsInStockSummary" Click="ToggleUnitsInStockSummary" />
+				<DxRibbonToggleItem Text="Product Name" Checked="@productNameSummary" Click="Grid_ToggleProductNameSummary" />
+				<DxRibbonToggleItem Text="Unit Price" Checked="@unitPriceSummary" Click="Grid_ToggleUnitPriceSummary" />
+				<DxRibbonToggleItem Text="Units in Stock" Checked="@unitsInStockSummary" Click="Grid_ToggleUnitsInStockSummary" />
 			</DxRibbonItem>
 			<DxRibbonItem Text="Items on Page:"
 						  Enabled="false"
 						  CssClass="rb-text-item" />
-			<DxRibbonSpinEditItem Value="@itemsOnPage"
+			<DxRibbonSpinEditItem Value="@ItemsOnPage"
 								  MinValue="5"
 								  MaxValue="32"
 								  Increment="1"
@@ -55,34 +57,34 @@
 	<DxRibbonTab Text="Data">
 		<DxRibbonGroup Text="Data">
 			<DxRibbonItem Text="New Item"
-						  IconCssClass="rb-icon rb-icon-document-blank"
-						  Tooltip="new Item"
-						  Click="NewItem" />
+						  IconUrl="images/ribbon/document-blank.svg"
+						  Tooltip="New Item"
+						  Click="Grid_NewItem" />
 			<DxRibbonItem Text="Delete Item"
-						  IconCssClass="rb-icon rb-icon-delete"
-						  Tooltip="Delete item"
-						  Click="DeleteItem" />
+						  IconUrl="images/ribbon/delete.svg"
+						  Tooltip="Delete Item"
+						  Click="Grid_DeleteItem" />
 			<DxRibbonItem Text="Edit Mode:"
 						  Enabled="false"
-						  IconCssClass="rb-icon rb-icon-edit"
+						  IconUrl="images/ribbon/grid-toolbar-edit.svg"
 						  CssClass="rb-text-item" />
 			<DxRibbonComboBoxItem Data="EditModes"
 								  @bind-Value="CurrentEditMode"
 								  TextFieldName="@nameof(GridEditMode)" />
 			<DxRibbonItem Text="Export"
-						  IconCssClass="rb-icon rb-icon-share"
+						  IconUrl="images/ribbon/share.svg"
 						  SplitDropDownButton="true"
 						  IsPrimary="true"
 						  Tooltip="Export">
 				<DxRibbonItem Text="CSV" Tooltip="CSV"
-							  IconCssClass="rb-icon rb-icon-table"
-							  Click="Export_To_Csv" />
+							  IconUrl="images/ribbon/table.svg"
+							  Click="Grid_ExportToCsv" />
 				<DxRibbonItem Text="PDF" Tooltip="PDF"
-							  IconCssClass="rb-icon rb-icon-document-blank"
-							  Click="Export_To_Pdf" />
+							  IconUrl="images/ribbon/document-blank.svg"
+							  Click="Grid_ExportToPdf" />
 				<DxRibbonItem Text="XLSX" Tooltip="XLSX"
-							  IconCssClass="rb-icon rb-icon-table"
-							  Click="Export_To_Xlsx" />
+							  IconUrl="images/ribbon/table.svg"
+							  Click="Grid_ExportToXlsx" />
 			</DxRibbonItem>
 		</DxRibbonGroup>
 	</DxRibbonTab>
@@ -91,9 +93,9 @@
 		KeyFieldName="@nameof(Product.ProductID)"
 		@ref="grid"
 		EditMode="@CurrentEditMode"
-		ShowFilterRow="@showFilterPanel"
-		ShowGroupPanel="@showGroupPanel"
-		ShowSearchBox="@showSearchBox"
+		ShowFilterRow="@ShowFilterPanel"
+		ShowGroupPanel="@ShowGroupPanel"
+		ShowSearchBox="@ShowSearchBox"
 		AutoExpandAllGroupRows="true"
 		FocusedRowEnabled="true"
 		AllowSelectRowByClick="true"
@@ -101,7 +103,7 @@
 		DataItemDeleting="OnDataItemDeleting"
 		EditModelSaving="OnEditModelSaving"
 		CustomizeEditModel="OnCustomizeEditModel"
-		PageSize="@itemsOnPage">
+		PageSize="@ItemsOnPage">
 	<EditFormTemplate Context="editFormContext">
 		@{
 			var product = (Product)editFormContext.EditModel;
@@ -183,16 +185,16 @@
 	private GridEditMode CurrentEditMode { get; set; } = EditModes[0];
 
 	private void ItemsOnPageChanged(int newValue) {
-		itemsOnPage = newValue;
+		ItemsOnPage = newValue;
 		grid.BeginUpdate();
-		grid.PageSize = itemsOnPage;
+		grid.PageSize = ItemsOnPage;
 		grid.EndUpdate();
 	}
 
 	const string ExportFileName = "ExportResult";
-	bool showSearchBox { get; set; } = false;
-	bool showFilterPanel { get; set; } = false;
-	bool showGroupPanel { get; set; } = false;
+	bool ShowSearchBox { get; set; } = false;
+	bool ShowFilterPanel { get; set; } = false;
+	bool ShowGroupPanel { get; set; } = false;
 	bool showColumnChooser { get; set; } = false;
 	byte categoryGroupIndex { get; set; } = 0;
 
@@ -200,7 +202,7 @@
 	bool unitPriceSummary { get; set; } = false;
 	bool unitsInStockSummary { get; set; } = false;
 
-	int itemsOnPage { get; set; } = 10;
+	int ItemsOnPage { get; set; } = 10;
 
 	Product SelectedDataItem { get; set; }
 
@@ -220,37 +222,37 @@
 		categories = DataService.GetCategories().ToList();
 	}
 
-	async Task NewItem() {
+	async Task Grid_NewItem() {
 		await grid.StartEditNewRowAsync();
 	}
-	void DeleteItem() {
+	void Grid_DeleteItem() {
 		grid.ShowRowDeleteConfirmation(FocusedRowVisibleIndex);
 	}
-	void ShowColumnChooser() {
+	void Grid_ShowColumnChooser() {
 		grid.ShowColumnChooser();
 	}
-	async Task Export_To_Xlsx() {
+	async Task Grid_ExportToXlsx() {
 		await grid.ExportToXlsxAsync(ExportFileName);
 	}
-	async Task Export_To_Csv() {
+	async Task Grid_ExportToCsv() {
 		await grid.ExportToCsvAsync(ExportFileName);
 	}
-	async Task Export_To_Pdf() {
+	async Task Grid_ExportToPdf() {
 		await grid.ExportToPdfAsync(ExportFileName);
 	}
-	async Task ToggleSearch() {
-		showSearchBox = !showSearchBox;
+	async Task Grid_ToggleSearch() {
+		ShowSearchBox = !ShowSearchBox;
 		await Task.CompletedTask;
 	}
-	async Task ToggleFilterPanel() {
-		showFilterPanel = !showFilterPanel;
+	async Task Grid_ToggleFilterPanel() {
+		ShowFilterPanel = !ShowFilterPanel;
 		await Task.CompletedTask;
 	}
-	async Task ToggleGroupPanel() {
-		showGroupPanel = !showGroupPanel;
+	async Task Grid_ToggleGroupPanel() {
+		ShowGroupPanel = !ShowGroupPanel;
 		await Task.CompletedTask;
 	}
-	async Task ToggleGrouping() {
+	async Task Grid_ToggleGrouping() {
 		grid.BeginUpdate();
 		if (categoryGroupIndex == 0) {
 			grid.GroupBy("CategoryID", 1);
@@ -263,19 +265,19 @@
 		grid.EndUpdate();
 		await Task.CompletedTask;
 	}
-	async Task ToggleProductNameSummary() {
+	async Task Grid_ToggleProductNameSummary() {
 		productNameSummary = !productNameSummary;
 		await Task.CompletedTask;
 	}
-	async Task ToggleUnitPriceSummary() {
+	async Task Grid_ToggleUnitPriceSummary() {
 		unitPriceSummary = !unitPriceSummary;
 		await Task.CompletedTask;
 	}
-	async Task ToggleUnitsInStockSummary() {
+	async Task Grid_ToggleUnitsInStockSummary() {
 		unitsInStockSummary = !unitsInStockSummary;
 		await Task.CompletedTask;
 	}
-	async Task ToggleSummaries() {
+	async Task Grid_ToggleSummaries() {
 		bool allOff = !productNameSummary && !unitPriceSummary && !unitsInStockSummary;
 
 		productNameSummary = allOff;
