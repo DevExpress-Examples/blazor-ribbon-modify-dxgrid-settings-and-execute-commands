@@ -3,7 +3,7 @@
 @using DevExpress.Images.Blazor
 
 <DxRibbon>
-	<DxRibbonApplicationTab Text="Export" IconUrl="images/ribbon/share.svg">
+	<DxRibbonApplicationTab Text="Export" IconUrl="@Icon.Share">
 		<DxRibbonApplicationTabItem Text="CSV"
 									IconUrl="@Icon.Table"
 									Click="Grid_ExportToCsv" />
@@ -16,25 +16,20 @@
 	</DxRibbonApplicationTab>
 	<DxRibbonTab Text="Home">
 		<DxRibbonGroup Text="Grid Customization">
-			<DxRibbonToggleItem Text="@(ShowSearchBox ? "Hide Search Box" : "Show Search Box")"
-								IconUrl="@Icon.Search"
+			<DxRibbonToggleItem Text="Search Box"
 								Tooltip="Toggle Search Box"
 								Click="Grid_ToggleSearch" />
-			<DxRibbonToggleItem Text="@(ShowFilterPanel ? "Hide Filter Panel" : "Show Filter Panel")"
+			<DxRibbonToggleItem Text="Filter Panel"
 								Tooltip="Toggle Filter Panel"
-								IconUrl="@Icon.Filter"
 								Click="Grid_ToggleFilterPanel" />
-			<DxRibbonToggleItem Text="@(ShowGroupPanel ? "Hide Group Panel" : "Show Group Panel")"
+			<DxRibbonToggleItem Text="Group Panel"
 								Tooltip="Toggle Group Panel"
-								IconUrl="@Icon.Group"
 								Click="Grid_ToggleGroupPanel" />
 			<DxRibbonItem Text="Show Column Chooser"
 						  Tooltip="Show Column Chooser"
-						  IconUrl="@Icon.ColumnChooser"
 						  Click="Grid_ShowColumnChooser" />
-			<DxRibbonToggleItem Text="@(categoryGroupIndex == 0 ? "Enable Grouping" : "Disable Grouping")"
+			<DxRibbonToggleItem Text="Group Data"
 								Tooltip="Toggle Grouping"
-								IconUrl="@Icon.Group"
 								Click="Grid_ToggleGrouping" />
 			<DxRibbonItem Text="Total Summary"
 						  SplitDropDownButton="true"
@@ -45,38 +40,32 @@
 				<DxRibbonToggleItem Text="Unit Price" Checked="@unitPriceSummary" Click="Grid_ToggleUnitPriceSummary" />
 				<DxRibbonToggleItem Text="Units in Stock" Checked="@unitsInStockSummary" Click="Grid_ToggleUnitsInStockSummary" />
 			</DxRibbonItem>
-			<DxRibbonItem Text="Items on Page:"
-						  Enabled="false"
-						  CssClass="rb-text-item" />
 			<DxRibbonSpinEditItem Value="@ItemsOnPage"
 								  MinValue="5"
 								  MaxValue="32"
 								  Increment="1"
 								  Width="100px"
-								  ValueChanged="@((int newValue) => ItemsOnPageChanged(newValue))" />
+								  ValueChanged="@((int newValue) => ItemsOnPageChanged(newValue))"
+								  Text="Items on Page"
+								  AdaptiveText="hello"/>
 		</DxRibbonGroup>
 	</DxRibbonTab>
 	<DxRibbonTab Text="Data">
 		<DxRibbonGroup Text="Data">
-			<DxRibbonItem Text="New Item"
-						  IconUrl="@Icon.Document"
-						  Tooltip="New Item"
+			<DxRibbonItem Text="New Row"
+						  Tooltip="New Row"
 						  Click="Grid_NewItem" />
-			<DxRibbonItem Text="Delete Item"
-						  IconUrl="@Icon.Delete"
-						  Tooltip="Delete Item"
+			<DxRibbonItem Text="Delete Row"
+						  Tooltip="Delete Row"
 						  Click="Grid_DeleteItem" />
-			<DxRibbonItem Text="Edit Mode:"
-						  Enabled="false"
-						  IconUrl="@Icon.TableEdit"
-						  CssClass="rb-text-item" />
-			<DxRibbonComboBoxItem Data="EditModes"
+			<DxRibbonComboBoxItem Data="EditModeItems"
 								  @bind-Value="CurrentEditMode"
-								  TextFieldName="@nameof(GridEditMode)" />
+								  TextFieldName="@nameof(EditModeItem.Text)"
+								  ValueFieldName="@nameof(EditModeItem.Value)" />
 			<DxRibbonItem Text="Export"
 						  IconUrl="@Icon.Share"
 						  SplitDropDownButton="true"
-						  IsPrimary="true"
+						  IsPrimary="false"
 						  Tooltip="Export">
 				<DxRibbonItem Text="CSV" Tooltip="CSV"
 							  IconUrl="@Icon.Table"
@@ -183,10 +172,18 @@
 				GridEditMode.PopupEditForm,
 				GridEditMode.EditRow
 	};
+	public class EditModeItem
+	{
+		public string Text { get; set; }
+		public GridEditMode Value { get; set; }
+	}
 
-	private GridEditMode CurrentEditMode { get; set; } = EditModes[0];
+	List<EditModeItem> EditModeItems { get; set; } =
+		EditModes.Select(m => new EditModeItem { Text = $"Edit Mode: {m}", Value = m }).ToList();
 
-	private void ItemsOnPageChanged(int newValue) {
+	GridEditMode CurrentEditMode { get; set; } = EditModes[0];
+
+	void ItemsOnPageChanged(int newValue) {
 		ItemsOnPage = newValue;
 		grid.BeginUpdate();
 		grid.PageSize = ItemsOnPage;
@@ -197,7 +194,6 @@
 	bool ShowSearchBox { get; set; } = false;
 	bool ShowFilterPanel { get; set; } = false;
 	bool ShowGroupPanel { get; set; } = false;
-	bool showColumnChooser { get; set; } = false;
 	byte categoryGroupIndex { get; set; } = 0;
 
 	bool productNameSummary { get; set; } = false;

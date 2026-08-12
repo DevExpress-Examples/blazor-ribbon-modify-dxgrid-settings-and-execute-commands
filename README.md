@@ -4,13 +4,13 @@
 [![](https://img.shields.io/badge/📖_How_to_use_DevExpress_Examples-e9f6fc?style=flat-square)](https://docs.devexpress.com/GeneralInformation/403183)
 [![](https://img.shields.io/badge/💬_Leave_Feedback-feecdd?style=flat-square)](#does-this-example-address-your-development-requirementsobjectives)
 <!-- default badges end -->
-# Blazor Ribbon – Modify Settings and Execute Commands Within Blazor Grid
+# Blazor Ribbon – Modify Blazor Grid Settings and Execute Commands
 
 This example uses `DxRibbon` to modify the following `DxGrid` settings and execute commands:
 
 * Add and delete rows
 * Switch Grid edit modes
-* Display/hide column chooser, search box, filter panel, and group panel
+* Display/hide the column chooser, search box, filter panel, and group panel
 * Modify the number of items on a page
 * Export data to CSV, PDF, and XLSX
 
@@ -18,7 +18,7 @@ This example uses `DxRibbon` to modify the following `DxGrid` settings and execu
 
 ### Control States of DxGrid Panels
 
-`DxRibbon` items update properties that are bound to `DxGrid` panel settings. For example, the following code snippet controls grid's filter panel:
+`DxRibbon` items update properties that are bound to `DxGrid` panel settings. For example, the following code snippet controls the grid's filter panel:
 
 ```html
 <DxRibbon>
@@ -126,23 +126,6 @@ Define an [EditFormTemplate](https://docs.devexpress.com/Blazor/DevExpress.Blazo
 </DxGrid>
 ```
 
-### Define Ribbon Label Items
-
-`DxRibbonItem` and custom CSS class implement static Ribbon text:
-
-```xml
-@using DevExpress.Images.Blazor
-@* ... *@
-<DxRibbonItem Text="Items on Page:"
-              Enabled="false"
-              CssClass="rb-text-item" />
-```
-```css
-.rb-text-item {
-    color: var(--dxds-color-content-neutral-default-static-light-rest) !important;
-}
-```
-
 ### Synchronize Togge Item States
 
 The `Total Summary` ribbon item's menu contains three independent toggles. You can keep their states in sync as follows:
@@ -172,7 +155,7 @@ The `Total Summary` ribbon item's menu contains three independent toggles. You c
 }
 ```
 
-After you change toggle values in code, call the [StateHasChanged](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.componentbase.statehaschanged) method to force a re-render and reflect these changes in the UI.
+Once you change toggle values in code, call the [StateHasChanged](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.componentbase.statehaschanged) method to force a re-render and reflect these changes in the UI.
 
 ## Files to Review
 

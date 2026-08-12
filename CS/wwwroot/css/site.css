@@ -52,8 +52,3 @@ html, body {
 .button-link {
     text-decoration: unset;
 }
-
-/* Ribbon */
-.rb-text-item {
-    color: var(--dxds-color-content-neutral-default-static-light-rest) !important;
-}
