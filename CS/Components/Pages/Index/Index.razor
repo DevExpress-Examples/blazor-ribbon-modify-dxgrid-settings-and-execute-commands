@@ -21,8 +21,8 @@
 								Click="Grid_ToggleSearch"
 								IconUrl="@Icon.Search" />
 			<DxRibbonToggleItem Text="Filter Panel"
-								Tooltip="Toggle Filter Panel"
-								Click="Grid_ToggleFilterPanel"
+								Tooltip="Toggle Filter Row"
+								Click="Grid_ToggleFilterRow"
 								IconUrl="@Icon.Filter" />
 			<DxRibbonToggleItem Text="Group Panel"
 								Tooltip="Toggle Group Panel"
@@ -91,7 +91,7 @@
 		KeyFieldName="@nameof(Product.ProductID)"
 		@ref="grid"
 		EditMode="@CurrentEditMode"
-		ShowFilterRow="@ShowFilterPanel"
+		ShowFilterRow="@ShowFilterRow"
 		ShowGroupPanel="@ShowGroupPanel"
 		ShowSearchBox="@ShowSearchBox"
 		AutoExpandAllGroupRows="true"
@@ -199,7 +199,7 @@
 
 	const string ExportFileName = "ExportResult";
 	bool ShowSearchBox { get; set; } = false;
-	bool ShowFilterPanel { get; set; } = false;
+	bool ShowFilterRow { get; set; } = false;
 	bool ShowGroupPanel { get; set; } = false;
 	byte categoryGroupIndex { get; set; } = 0;
 
@@ -249,8 +249,8 @@
 		ShowSearchBox = !ShowSearchBox;
 		await Task.CompletedTask;
 	}
-	async Task Grid_ToggleFilterPanel() {
-		ShowFilterPanel = !ShowFilterPanel;
+	async Task Grid_ToggleFilterRow() {
+		ShowFilterRow = !ShowFilterRow;
 		await Task.CompletedTask;
 	}
 	async Task Grid_ToggleGroupPanel() {
